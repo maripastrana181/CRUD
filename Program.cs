@@ -23,7 +23,7 @@ public class FileManagement2
         }
 
     }
-    public void insertData( string line)
+    public void insertLine( string line)
     {
         System.IO.StreamWriter file = new System.IO.StreamWriter(fileName, true);
         file.WriteLine(line);
@@ -36,7 +36,7 @@ public class FileManagement2
         File.WriteAllLines(fileName, lines.Where(li => li != lineToDelete));
       
     }
-    public void modified(string newLine, int num)
+    public void modifyLine(string newLine, int num)
     {
         int counter = 1;
         string line = "";
@@ -60,15 +60,43 @@ public class FileManagement2
             }
                
         }
-            
+        File.Delete("prueba.txt");
+        System.IO.File.Move("prueba3.txt", "prueba.txt");
+        
+
 
     }
 
+    public void deleteByNumLine(int numLine)
+    {
+        int counter = 1;
+        string line = "";
 
+        using (StreamWriter newTask = new StreamWriter("prueba3.txt", false))
+        {
+            using (StreamReader file = new System.IO.StreamReader(fileName))
+            {
+                while (((line = file.ReadLine()) != null) && (counter < numLine))
+                {
+                    newTask.WriteLine(line);
+                    counter++;
+                }
+                newTask.WriteLine("");
+                while ((line = file.ReadLine()) != null)
+                {
+                    newTask.WriteLine(line);
+
+                }
+
+            }
+
+        }
+        File.Delete("prueba.txt");
+        System.IO.File.Move("prueba3.txt", "prueba.txt");
+
+    }
 
 }
-
-
 
 namespace ConsoleApp2
 {
@@ -76,11 +104,12 @@ namespace ConsoleApp2
     {
         static void Main(string[] args)
         {
-            FileManagement2 fileTest = new FileManagement2("prueba.txt");
+            string fileName = Console.ReadLine();
+            FileManagement2 fileTest = new FileManagement2(fileName);
             fileTest.read();
-            fileTest.insertData( "holi");
-            fileTest.deleteLine("Hector Ricardo");
-            fileTest.modified("hola", 3);
+            fileTest.insertLine( "Jorge, 50, Argentina");
+            fileTest.deleteLine("Maria,30, Mexico");
+            fileTest.modifyLine("Adriana, 46, Espana", 3);
             Console.ReadLine();
 
         }
